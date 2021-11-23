@@ -30,8 +30,10 @@ class sTrack_Graph {
 			'unique' => 0
 		);
 		$args = wp_parse_args( $args, $defaults );
+		
 		$ds = array();
 		$graph_range = self::graph_range(array('condition' => $args['time_range']));
+// 		var_dump($graph_range); exit;
 		//print_r($graph_range['labels']);
 		//for($h = $h; $h <= count($graph_range['labels']); $h++)
 		foreach($graph_range['labels'] as $i => $label)
@@ -61,7 +63,7 @@ class sTrack_Graph {
 				'unique' => $args['unique']
 			)));
 		}
-		
+// 		var_dump($ds); exit;
 		return $ds;
 	}
 	
@@ -77,9 +79,9 @@ class sTrack_Graph {
 			'condition' => 'today'
 		);
 		$args = wp_parse_args( $args, $defaults );
-		$range = array();
+		$range = array(); 
 		$check = sTrack_Core::last_x_days(array('condition' => $args['condition']));
-		$args['condition'] = $check['condition'];
+		$args['condition'] = $check['condition']; 
 		
 		// Check for custom
 		$custom_check = sTrack_Core::custom_range(array('condition' => $args['condition']));
@@ -126,7 +128,7 @@ class sTrack_Graph {
 			case 'last_month':
 				$y = date_i18n('m') === '01' ? date_i18n('Y')-1 : date_i18n('Y');
 				$m = date_i18n('m') === '01' ? 12 : date_i18n('m')-1;
-				$am_days = cal_days_in_month(CAL_GREGORIAN, $m, $y);
+				$am_days = 31; //cal_days_in_month(CAL_GREGORIAN, $m, $y);
 				$range['labels'] = array();
 				for($i = 1; $i <= $am_days; $i++){ array_push($range['labels'], $i); }
 				$range['time_range'] = 'day';
@@ -226,7 +228,7 @@ class sTrack_Graph {
 				$range['time_range'] = '';
 				break;	
 		}
-		
+// 		var_dump($range); exit;
 		return wp_parse_args($range, array('order' => '', 'y' => '', 'm' => '', 'd' => ''));
 	}
 	
