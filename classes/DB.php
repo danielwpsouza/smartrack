@@ -653,6 +653,8 @@ class sTrack_DB {
 			$title = $limit ? str_replace(' ', '-', get_the_title($group_id)) : '';
 			
 			$filename = 'statistics_for_'.$filter_str.'_'.$title.'_from_'.$tm_str;
+			
+			try {
 			$impression_data = sTrack_Graph::dataset(array(
 				'event_type' => 'impression',
 				'where' => array( array($group, $group_id)),
@@ -660,6 +662,9 @@ class sTrack_DB {
 				'time_range' => $time_range,
 				'unique' => $unique_stats
 			));
+			} catch (Exception $e) {
+			    echo 'Exceção capturada: ',  $e->getMessage(), "\n"; exit;
+			}
 			$click_data = sTrack_Graph::dataset(array(
 				'event_type' => 'click',
 				'where' => array( array($group, $group_id)),
@@ -668,6 +673,7 @@ class sTrack_DB {
 				'unique' => $unique_stats
 			));
 			$labels = sTrack_Graph::graph_range(array('condition' => $time_range));
+
 			/*
 			$clicks_am = self::count_stats(array(
 				'event_type' => 'click',
